@@ -3,6 +3,7 @@ from cogsg.models import Member, Attend, District
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import update_session_auth_hash
 from datetime import datetime
+from django.utils import timezone
 from .customer_validator import UniqueForWeekValidator
 
 
