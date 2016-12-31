@@ -15,7 +15,7 @@ class MemberViewSet(viewsets.ModelViewSet):
 
     @list_route()
     def active(self, req):
-        active_members = Member.objects.all().filter(Status=True)
+        active_members = Member.objects.all().filter(Status=True).order_by('Name')
         serializer = self.get_serializer(active_members, many=True)
         return Response(serializer.data)
 
