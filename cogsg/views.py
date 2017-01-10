@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, request
 from rest_framework.decorators import list_route, detail_route
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 from .serializers import MemberSerializer, DistrictSerializer, AttendSerializer, UserSerializer
 from .models import Member, District, Attend
-
+import datetime
 
 # Create your views here.
 
@@ -28,6 +28,16 @@ class DistrictViewSet(viewsets.ModelViewSet):
 class AttendViewSet(viewsets.ModelViewSet):
     serializer_class = AttendSerializer
     queryset = Attend.objects.all()
+
+    @list_route()
+    def weekly(self,req):
+
+        date = req.GET
+        print("this is date:")
+
+        start_week = date - datetime.timedelta(date.weekday())
+        end_week = start_week + datetime.timedelta(7)
+        weekly_data = Attend.objects.all().filter(Create_Date__range=[start_week,end_week])
 
     # def create(self, request, *args, **kwargs):
     #
