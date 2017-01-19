@@ -190,3 +190,11 @@ STATIC_URL = '/static/'
 # CSRF_COOKIE_SECURE = True
 # SECURE_SSL_REDIRECT = True
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+
+# email config
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'htobenothing@gmail.com'
+EMAIL_HOST_PASSWORD = 'totime1#'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
