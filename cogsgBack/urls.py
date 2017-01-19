@@ -36,6 +36,10 @@ urlpatterns += [
     url(r'^api/token-auth/', obtain_jwt_token),
 ]
 
+urlpatterns +=[
+    url(r'api/email/office/', views.sendStaticEmail),
+]
+
 
 # urlpatterns += [
 #     url(r'^$', TemplateView.as_view(template_name='index.html'), name="index"),  # see TEMPLATE_DIRS and STATICFILES_DIRS in settings.py
