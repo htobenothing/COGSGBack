@@ -4,6 +4,7 @@ from rest_framework.decorators import list_route, detail_route, api_view
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 from django.core.mail import send_mail,EmailMultiAlternatives
+from django.conf import settings
 from .serializers import MemberSerializer, DistrictSerializer, AttendSerializer, UserSerializer
 from .models import Member, District, Attend
 from datetime import datetime, timedelta
@@ -78,15 +79,21 @@ def sendStaticEmail(req):
         subject = "Weekly Report for CommonWealth: {0} -- {1}".format(start, lordDay)
         fromEmail = "htobenoting@gmail.com"
         toEmail = ["htobenothing@gmail.com"]
-        htmlContent = "<label>Dear ChurchOffice:</label> <p>Here is the statistic for CommonWealth :</p>" \
-                      "<table class='table'> <tr> <td>Lord's day meeting</td> <td>{0}</td> " \
-                      "</tr> <tr> <td>Morning Revival</td> <td>{1}</td> " \
-                      "</tr> <tr> <td>Bible Reading</td> <td>{2}</td> </tr> " \
-                      "<tr> <td>Small group/home meeting</td> <td>{3}</td> </tr> " \
-                      "<tr> <td>Prayer Meeting</td> <td>{4}</td> </tr> " \
-                      "<tr> <td>Children</td> <td>{5}</td> </tr> </table> "\
-            .format(statistic["Lords_Table"],statistic["Morning_Revival"],statistic["Bible_Reading"],
+        htmlContent = ''
+        emailTemplatePath = settings.STATIC_ROOT+"email/statisticEmail_R.html"
+        with open(emailTemplatePath,'r') as myfile:
+            data = myfile.read()
+            htmlContent = data.format(statistic["Lords_Table"],statistic["Morning_Revival"],statistic["Bible_Reading"],
                     statistic["Small_Group"],statistic["Prayer_Meeting"],statistic["Children"])
+        # htmlContent = "<label>Dear ChurchOffice:</label> <p>Here is the statistic for CommonWealth :</p>" \
+        #               "<table class='table'> <tr> <td>Lord's day meeting</td> <td>{0}</td> " \
+        #               "</tr> <tr> <td>Morning Revival</td> <td>{1}</td> " \
+        #               "</tr> <tr> <td>Bible Reading</td> <td>{2}</td> </tr> " \
+        #               "<tr> <td>Small group/home meeting</td> <td>{3}</td> </tr> " \
+        #               "<tr> <td>Prayer Meeting</td> <td>{4}</td> </tr> " \
+        #               "<tr> <td>Children</td> <td>{5}</td> </tr> </table> "\
+        #     .format(statistic["Lords_Table"],statistic["Morning_Revival"],statistic["Bible_Reading"],
+        #             statistic["Small_Group"],statistic["Prayer_Meeting"],statistic["Children"])
         msg = EmailMultiAlternatives(subject=subject,from_email=fromEmail,to=toEmail)
         msg.attach_alternative(htmlContent,"text/html")
         try :
